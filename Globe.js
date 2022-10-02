@@ -222,8 +222,7 @@ export default class Globe {
     this.updateCategoryTimestamp(layer.category);
   }
 
-  updatePlaceMarkerPosition(layer, lat, lon) {
-    layer.renderables[0].position = new WorldWind.Position(lat, lon, 2000000)
+  refreshLayer(layer) {
     layer.refresh();
     this.wwd.redraw();
   }

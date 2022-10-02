@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 import Globe from './Globe.js';
 import LayersViewModel from './LayersViewModel.js';
 import SettingsViewModel from './SettingsViewModel.js';
@@ -183,7 +182,7 @@ $(document).ready(function () {
   })
 
 
-  
+  //globe.wwd.goTo(new WorldWind.Location(lat, lon));
   
   var modelLayer = new WorldWind.RenderableLayer("ISS");
   
@@ -199,9 +198,6 @@ $(document).ready(function () {
     colladaModel.scale = 3000000;
     modelLayer.addRenderable(colladaModel);});
   
-  
-  
-  globe.addLayer(placemarkLayer)
   
   // -----------------------------------------------
   // Initialize Knockout view models and html views

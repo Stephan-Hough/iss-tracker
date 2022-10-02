@@ -125,7 +125,7 @@ $(document).ready(function () {
   //   enabled: false
   // });
 
-  
+  //globe.wwd.goTo(new WorldWind.Location(lat, lon));
   
   var modelLayer = new WorldWind.RenderableLayer("ISS");
   
@@ -141,9 +141,6 @@ $(document).ready(function () {
     colladaModel.scale = 3000000;
     modelLayer.addRenderable(colladaModel);});
   
-  
-  
-  globe.addLayer(placemarkLayer)
   
   // -----------------------------------------------
   // Initialize Knockout view models and html views

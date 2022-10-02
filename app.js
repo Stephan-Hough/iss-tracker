@@ -125,77 +125,12 @@ $(document).ready(function () {
   //   enabled: false
   // });
 
-  const orbitLayer = new WorldWind.RenderableLayer("Orbit")
-  globe.addLayer(orbitLayer, {
-    category: "data",
-    enabled: true
-  });
-  
-  // Create and assign the path's attributes.
-  const orbitShapeAttrs = new WorldWind.ShapeAttributes(null);
-  // orbitShapeAttrs.outlineColor = WorldWind.Color.BLUE;
-  orbitShapeAttrs.interiorColor = new WorldWind.Color(1, 1, 1, 0.5);
-  // orbitShapeAttrs.drawVerticals = orbit.extrude; //Draw verticals only when extruding.
-
-  fetch(TLE_URL).then(response => response.json())
-  .then((tleData) => {
-    console.log(tleData)
-    const { line1, line2 } = tleData
-    const tleStr = `${line1}\n${line2}`
-
-    tlejs.getGroundTracks({
-      tle: tleStr,
-      stepMS: 60e3,
-      isLngLatFormat: false, 
-    }).then(([ previous, current, next ]) => {
-      const orbit = new WorldWind.Path(
-        [...previous, ...current, ...next].map(([ lat, lon ]) => new WorldWind.Position(lat, lon, ISS_ALTITUDE)),
-        orbitShapeAttrs
-      )
-      orbit.pathType = WorldWind.GREAT_CIRCLE
-      orbit.numSubSegments = 100
-    
-      orbit.altitudeMode = WorldWind.ABSOLUTE
-      // orbit.followTerrain = true;
-      orbit.extrude = true; // Make it a curtain.
-      orbit.useSurfaceShapeFor2D = true; // Use a surface shape in 2D mode.
-      
-      // // Create and assign the path's highlight attributes.
-      // const highlightAttributes = new WorldWind.ShapeAttributes(orbitShapeAttrs);
-      // highlightAttributes.outlineColor = WorldWind.Color.RED;
-      // highlightAttributes.interiorColor = new WorldWind.Color(1, 1, 1, 0.5);
-      // orbit.highlightAttributes = highlightAttributes;
-    
-      // Add the path to a layer and the layer to the WorldWindow's layer list.
-      orbitLayer.addRenderable(orbit)
-      
-      let { lat, lng } = tlejs.getLatLngObj(tleStr)
-      const ISSPlacemark = addISSModel(orbitLayer, lat, lng, ISS_ALTITUDE)
-      globe.wwd.goTo(new WorldWind.Location(lat, lng));
-
-      var colladaLoader = new WorldWind.ColladaLoader(
-        new WorldWind.Position(lat, lng, ISS_ALTITUDE),
-        { dirPath: 'images/' }
-      )
-      
-      colladaLoader.load("ISS.dae", function (ISSModel) {
-        ISSModel.scale = 2e6;
-        ISSLayer.addRenderable(ISSModel)
-
-        globe.wwd.goTo(new WorldWind.Location(lat, lng));
-
-        setInterval(() => {
-          let { lat, lng } = tlejs.getLatLngObj(tleStr)
-          ISSModel.position = new WorldWind.Position(lat, lng, ISS_ALTITUDE)
-          globe.refreshLayer(ISSLayer);
-        }, 1e3);
-      });
-
-    })
-  })
-
-
-  //globe.wwd.goTo(new WorldWind.Location(lat, lon));
+  var placemarkLayer = new WorldWind.RenderableLayer("renderable layer", false);  
+  var placemarkattr = new WorldWind.PlacemarkAttributes(null)
+  placemarkattr.imageSource = "images/ISS.png"
+  placemarkattr.imageScale = 1;
+  var placemark = new WorldWind.Placemark(new WorldWind.Position(20, 30, 200000),true,placemarkattr);
+  //placemarkLayer.addRenderable(placemark);
   
   var modelLayer = new WorldWind.RenderableLayer("ISS");
   
@@ -211,6 +146,9 @@ $(document).ready(function () {
     colladaModel.scale = 3000000;
     modelLayer.addRenderable(colladaModel);});
   
+  
+  
+  globe.addLayer(placemarkLayer)
   
   // -----------------------------------------------
   // Initialize Knockout view models and html views

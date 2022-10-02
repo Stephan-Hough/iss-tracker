@@ -170,14 +170,25 @@ $(document).ready(function () {
       orbitLayer.addRenderable(orbit)
       
       let { lat, lng } = tlejs.getLatLngObj(tleStr)
-      const ISSPlacemark = addISSModel(orbitLayer, lat, lng, ISS_ALTITUDE)
-      globe.wwd.goTo(new WorldWind.Location(lat, lng));
 
-      setInterval(() => {
-        let { lat, lng } = tlejs.getLatLngObj(tleStr)
-        ISSPlacemark.position = new WorldWind.Position(lat, lng, ISS_ALTITUDE)
-        globe.refreshLayer(orbitLayer);
-      }, 1e3);
+      var colladaLoader = new WorldWind.ColladaLoader(
+        new WorldWind.Position(lat, lng, ISS_ALTITUDE),
+        { dirPath: 'images/' }
+      )
+      
+      colladaLoader.load("ISS.dae", function (ISSModel) {
+        ISSModel.scale = 2e6;
+        ISSLayer.addRenderable(ISSModel)
+
+        globe.wwd.goTo(new WorldWind.Location(lat, lng));
+
+        setInterval(() => {
+          let { lat, lng } = tlejs.getLatLngObj(tleStr)
+          ISSModel.position = new WorldWind.Position(lat, lng, ISS_ALTITUDE)
+          globe.refreshLayer(ISSLayer);
+        }, 1e3);
+      });
+
     })
   })
 
@@ -231,14 +242,3 @@ $(document).ready(function () {
     $(this).closest('.collapse').collapse('hide');
   });
 });
-
-const addISSModel = (layer, lat, lon, alt) => {
-  var placeMarkAttributes = new WorldWind.PlacemarkAttributes(null);
-  placeMarkAttributes.imageSource = 'images/ISS.png'
-  placeMarkAttributes.imageScale = 2;
-  
-  var placemark = new WorldWind.Placemark(new WorldWind.Position(lat, lon, alt), true, placeMarkAttributes);
-  placemark.displayName = "ISS"
-  layer.addRenderable(placemark);
-  return placemark
-}

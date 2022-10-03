@@ -1,6 +1,7 @@
-# 2022 Space Apps Challenge ISS Tracker 
+# An ISS Tracker in 3D 
+## Developed by The Trackers
 
-You can access this app here [https://stephan-hough.github.io/iss-tracker/](https://stephan-hough.github.io/iss-tracker/) to view the exact location of the Space station in 3D. 
+You can access the app here [https://stephan-hough.github.io/iss-tracker/](https://stephan-hough.github.io/iss-tracker/) to view the exact location of the Space station in 3D. 
 
 ## The Team
 We formed a small team in Exeter(UK) to take part in the Nasa International Space Apps Challenge 2022. We took on the ISS tracker challenge for tracking the International Space Station in 3D. You can find out more information about the team and the project here: [https://2022.spaceappschallenge.org/challenges/2022-challenges/track-the-iss/teams/the-trackers/project](https://2022.spaceappschallenge.org/challenges/2022-challenges/track-the-iss/teams/the-trackers/project)
